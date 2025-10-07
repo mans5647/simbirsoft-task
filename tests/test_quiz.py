@@ -1,36 +1,40 @@
 import pytest  
 from selenium import webdriver  
-
-from tests.pages.quiz_page import QuizPage
+import time
+from simbirproject.pages.quiz_page import QuizPage
 
 URL = 'https://practice-automation.com/form-fields/'
 
 @pytest.fixture
 def browser():
     driver = webdriver.Chrome()
-
     yield driver  
     driver.quit()
 
 
-def test_quiz_page(browser):
+def test_input_all_data(browser):
     quiz_page = QuizPage(browser)
     quiz_page.open(URL)
     
     quiz_page.enter_name('mansur')
     quiz_page.enter_password('password123')
+    quiz_page.set_favourite_drinks()
+    quiz_page.set_favourite_color()
+    quiz_page.set_automation_list_value()
+    quiz_page.enter_email('name@example.com')
+    quiz_page.enter_message()
+
+    assert quiz_page.submit() == QuizPage.MESSAGE_RECEIVED
     
-    quiz_page.check_favourite_drinks()
+def test_enter_all_butno_name(browser):
+    quiz_page = QuizPage(browser)
+    quiz_page.open(URL)
     
-    quiz_page.check_favourite_color()
-    quiz_page.select_like_automation()
-    quiz_page.enter_mock_email()
-    quiz_page.enter_count_max_val()
-    quiz_page.submit()
+    quiz_page.enter_password('password123')
+    quiz_page.set_favourite_drinks()
+    quiz_page.set_favourite_color()
+    quiz_page.set_automation_list_value()
+    quiz_page.enter_email('name@example.com')
+    quiz_page.enter_message()
     
-    assert quiz_page.has_name() and quiz_page.has_password()
-    assert quiz_page.are_drinks_checked()
-    assert quiz_page.is_favourite_color_checked()
-    assert quiz_page.check_if_selected_automation()
-    assert quiz_page.has_email()
-    assert quiz_page.has_message()
+    assert quiz_page.submit() == QuizPage.FORM_ERROR
