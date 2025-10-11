@@ -10,7 +10,8 @@ requires-python = ">=3.13"
 dependencies = [
     "selenium (>=4.36.0,<5.0.0)",
     "pytest (>=8.4.2,<9.0.0)",
-    "selenium-page-factory (>=2.7,<3.0)"
+    "selenium-page-factory (>=2.7,<3.0)",
+    "allure-pytest (>=2.15.0,<3.0.0)"
 ]
 
 [tool.poetry]
